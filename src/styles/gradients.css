@@ -1,0 +1,78 @@
+@property --color-start {
+  syntax: '<color>';
+  initial-value: #4A90E2;
+  inherits: false;
+}
+
+@property --color-end {
+  syntax: '<color>';
+  initial-value: #67B26F;
+  inherits: false;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--color-start),
+    var(--color-end)
+  );
+  background-size: 300% 300%;
+  animation: gradientAnimation 20s ease infinite;
+  transition: --color-start 0.7s ease, --color-end 0.7s ease;
+}
+
+.text-shadow-lg {
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.priority-button {
+  @apply px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-white text-sm sm:text-base font-medium 
+    transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 
+    focus:ring-white focus:ring-opacity-50;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.timer-display {
+  @apply font-mono font-bold text-white tracking-wider px-6 py-3 sm:px-8 sm:py-4 rounded-2xl;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.1);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  width: fit-content;
+}
+
+.control-button {
+  @apply px-6 py-2.5 sm:px-8 sm:py-3 rounded-full font-semibold transition-all
+    focus:outline-none text-sm sm:text-base;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+  &:active {
+    background: rgba(255, 255, 255, 0.25);
+  }
+  &:focus {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+  }
+} 
