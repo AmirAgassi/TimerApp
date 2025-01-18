@@ -1,17 +1,40 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export const useTimer = () => {
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const startTimeRef = useRef<number | null>(null);
+  const lastTickRef = useRef<number | null>(null);
 
   useEffect(() => {
-    let intervalId: number;
+    let animationFrameId: number;
+
+    const updateTimer = () => {
+      if (!isRunning || !startTimeRef.current) return;
+
+      const now = Date.now();
+      if (!lastTickRef.current) lastTickRef.current = now;
+
+      const delta = Math.floor((now - lastTickRef.current) / 1000);
+      if (delta >= 1) {
+        setTime(prevTime => prevTime + delta);
+        lastTickRef.current = now;
+      }
+
+      animationFrameId = requestAnimationFrame(updateTimer);
+    };
+
     if (isRunning) {
-      intervalId = window.setInterval(() => {
-        setTime(prevTime => prevTime + 1);
-      }, 1000);
+      startTimeRef.current = Date.now();
+      lastTickRef.current = startTimeRef.current;
+      updateTimer();
     }
-    return () => clearInterval(intervalId);
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
   }, [isRunning]);
 
   const startTimer = () => setIsRunning(true);
@@ -19,6 +42,8 @@ export const useTimer = () => {
   const resetTimer = () => {
     setIsRunning(false);
     setTime(0);
+    startTimeRef.current = null;
+    lastTickRef.current = null;
   };
 
   const formatTime = () => {
