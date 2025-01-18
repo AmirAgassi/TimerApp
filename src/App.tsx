@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Priority, priorities } from './types/Priority'
 import { useTimer } from './hooks/useTimer'
 import './styles/gradients.css'
@@ -6,6 +6,11 @@ import './styles/gradients.css'
 function App() {
   const [selectedPriority, setSelectedPriority] = useState<Priority>(priorities[0])
   const { formatTime, isRunning, startTimer, pauseTimer, resetTimer } = useTimer()
+
+  useEffect(() => {
+    const { hours, minutes } = formatTime()
+    document.title = `${hours}:${minutes} - ${selectedPriority.name}`
+  }, [formatTime(), selectedPriority])
 
   const handlePriorityChange = (priority: Priority) => {
     if (priority.id === selectedPriority.id) return;
